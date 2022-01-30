@@ -2,34 +2,30 @@ import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-
-function RenderPartner({ partner }) {
-    console.log(partner);
-    if (partner) {
+function RenderPartner({partner}) {
+    if (partner){
         return (
             <React.Fragment>
-                <Media object src={partner.image} alt={partner.name} width="150" />
-                <Media body className="ml-5 mb-4">
-                    <Media heading>{partner.name}</Media>
+                <Media object={true} src={partner.image} alt={partner.name} width='150'  />
+                <Media body={true} className='ml-5 mb-4'>
+                    <Media heading={true}>{partner.name}</Media>
                     {partner.description}
                 </Media>
+                
             </React.Fragment>
-        );
+        )
     }
-    return (
-        <div></div>
-    );
-
+    return <div />
 }
-
 
 function About(props) {
 
-    const partners = props.partners.map(partner => {
+    const partners = props.partners.map(item => {
         return (
-            <Media tag="li" key={partner.id}>
-                <RenderPartner partner={partner} />
+            <Media tag='li' key={item.id}>
+                <RenderPartner partner={item} />
             </Media>
+            
         );
     });
 
@@ -74,7 +70,7 @@ function About(props) {
                                 <p className="mb-0">I will not follow where the path may lead, but I will go where there is no path, and I will leave a trail.</p>
                                 <footer className="blockquote-footer">Muriel Strode,{' '}
                                     <cite title="Source Title">"Wind-Wafted Wild Flowers" -
-                                        The Open Court, 1903</cite>
+                                    The Open Court, 1903</cite>
                                 </footer>
                             </blockquote>
                         </CardBody>
