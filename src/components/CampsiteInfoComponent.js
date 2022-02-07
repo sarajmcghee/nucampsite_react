@@ -17,7 +17,7 @@ function RenderCampsite({campsite}) {
         );
     }
 
-function RenderComments({comments}) {
+function RenderComments({comments, addComment, campsiteId}) {
     if (comments) {
         return (
             <div className="col-md-5 m-1">
@@ -25,7 +25,7 @@ function RenderComments({comments}) {
                 {comments.map(comment => <div key={comments.id}>{comment.text}
                 <br></br>
                 -- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}<p></p></div>)}
-                <CommentForm />
+                <CommentForm campsiteId={campsiteId} addComment={addComment} />
             </div>
         );
     }
@@ -50,11 +50,10 @@ class CommentForm extends Component {
         });
     }
 
-    handleSubmit (values) {
-        console.log(values);
-        console.log('Current state is: ' + JSON.stringify(values));
-        alert('Current state is: ' + JSON.stringify(values));
+    handleSubmit(values) {
         this.toggleModal();
+        this.props.addComment(this.props.campsiteId, values.rating, values.author, values.text);
+        alert("Current state is: " + JSON.stringify(values));
     }
 
     render () {
@@ -67,7 +66,7 @@ class CommentForm extends Component {
                         <LocalForm onSubmit={values => this.handleSubmit(values)}>
                             <div className='form-group'>
                                 <Label htmlFor='rating'>Rating</Label> 
-                                <Control.select id='rating' model='.rating' name='rating' className='form-control' >
+                                <Control.select id='rating' model='.rating' name='rating' className='form-control' defaultValue={1} >
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -109,7 +108,11 @@ function CampsiteInfo(props) {
                 </div>
                 <div className="row">
                     <RenderCampsite campsite={props.campsite} />
-                    <RenderComments comments={props.comments} />
+                    <RenderComments 
+                        comments={props.comments}
+                        addComment={props.addComment}
+                        campsiteId={props.campsite.id}
+                    />
                 </div>
             </div>
         );
