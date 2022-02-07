@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardBody, CardText, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Control, LocalForm, Errors } from 'react-redux-form'
+import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
 function RenderCampsite({campsite}) {
         return (
@@ -66,7 +67,7 @@ class CommentForm extends Component {
                         <LocalForm onSubmit={values => this.handleSubmit(values)}>
                             <div className='form-group'>
                                 <Label htmlFor='rating'>Rating</Label> 
-                                <Control.select id='rating' model='.rating' name='rating' className='form-control' defaultValue={1} >
+                                <Control.select id='rating' model='.rating' name='rating' className='form-control' defaultValue={1}         >
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -93,6 +94,26 @@ class CommentForm extends Component {
 
 //RENDER CAMPSITE DETAILS
 function CampsiteInfo(props) {
+    if (props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            </div>
+        );
+    }
     if (props.campsite) {
         return (
             <div className="container">
