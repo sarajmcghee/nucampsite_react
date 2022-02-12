@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
-import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+import { FadeTransform, Fade, Stagger, Loop } from 'react-animation-components';
 
-function RenderCampsite({campsite}) {
-        return (
-            <div className="col-md-5 m-1">
+function RenderCampsite({ campsite }) {
+    return (
+        <div className="col-md-5 m-1">
             <FadeTransform
                 in
                 transformProps={{
@@ -24,10 +24,10 @@ function RenderCampsite({campsite}) {
             </FadeTransform>
         </div>
 
-        );
-    }
+    );
+}
 
-    function RenderComments({comments, postComment, campsiteId}) {
+function RenderComments({ comments, postComment, campsiteId }) {
     if (comments) {
         return (
             <div className="col-md-5 m-1">
@@ -36,14 +36,16 @@ function RenderCampsite({campsite}) {
                     {
                         comments.map(comment => {
                             return (
-                                <Fade in key={comment.id}>
-                                    <div>
-                                        <p>
-                                            {comment.text}<br />
-                                            -- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}
-                                        </p>
-                                    </div>
-                                </Fade>
+                                <FadeTransform in transformProps={{ enterTransform: 'translatex(70px)' }}>
+                                    <Fade in key={comment.id}>
+                                        <div>
+                                            <p>
+                                                {comment.text}<br />
+                                                -- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))}
+                                            </p>
+                                        </div>
+                                    </Fade>
+                                </FadeTransform>
                             );
                         })
                     }
@@ -60,10 +62,10 @@ class CommentForm extends Component {
         super(props);
         this.toggleModal = this.toggleModal.bind(this);
         this.state = {
-          isModalOpen: false,
-          rating: '',
-          author: '',
-          comment: ''
+            isModalOpen: false,
+            rating: '',
+            author: '',
+            comment: ''
         };
     }
 
@@ -78,7 +80,7 @@ class CommentForm extends Component {
         this.props.postComment(this.props.campsiteId, values.rating, values.author, values.text);
     }
 
-    render () {
+    render() {
         return (
             <div>
                 <Button outline onClick={this.toggleModal} ><i className='fa fa-pencil fa-lg'></i> Submit Comment</Button>
@@ -87,7 +89,7 @@ class CommentForm extends Component {
                     <ModalBody>
                         <LocalForm onSubmit={values => this.handleSubmit(values)}>
                             <div className='form-group'>
-                                <Label htmlFor='rating'>Rating</Label> 
+                                <Label htmlFor='rating'>Rating</Label>
                                 <Control.select id='rating' model='.rating' name='rating' className='form-control' defaultValue={1}         >
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -97,11 +99,11 @@ class CommentForm extends Component {
                                 </Control.select>
                             </div>
                             <div className='form-group'>
-                                <Label htmlFor='author'>Your Name</Label> 
+                                <Label htmlFor='author'>Your Name</Label>
                                 <Control.text id='author' model='.author' name='author' className='form-control' placeholder='Your Name' />
                             </div>
                             <div className='form-group'>
-                                <Label htmlFor='comment'>Comment</Label> 
+                                <Label htmlFor='comment'>Comment</Label>
                                 <Control.textarea id='comment' model='.comment' name='comment' className='form-control' />
                             </div>
                             <Button type='submit' color='primary' outline>Submit</Button>
@@ -144,8 +146,12 @@ function CampsiteInfo(props) {
                             <BreadcrumbItem><Link to='/directory'>Directory</Link></BreadcrumbItem>
                             <BreadcrumbItem active>{props.campsite.name}</BreadcrumbItem>
                         </Breadcrumb>
-                        <h2>{props.campsite.name}</h2>
-                        <hr />
+                        <Loop in iterations={5.5}>
+                            <Fade>
+                                <h2>{props.campsite.name}</h2>
+                                <hr />
+                            </Fade>
+                        </Loop>
                     </div>
                 </div>
                 <div className="row">
@@ -154,7 +160,7 @@ function CampsiteInfo(props) {
                         comments={props.comments}
                         postComment={props.postComment}
                         campsiteId={props.campsite.id}
-                    />       
+                    />
                 </div>
             </div>
         );
