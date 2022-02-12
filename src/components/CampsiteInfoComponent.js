@@ -103,8 +103,8 @@ class CommentForm extends Component {
                                 <Control.text id='author' model='.author' name='author' className='form-control' placeholder='Your Name' />
                             </div>
                             <div className='form-group'>
-                                <Label htmlFor='comment'>Comment</Label>
-                                <Control.textarea id='comment' model='.comment' name='comment' className='form-control' />
+                                <Label htmlFor='text'>Comment</Label>
+                                <Control.textarea id='text' model='.text' name='text' className='form-control' />
                             </div>
                             <Button type='submit' color='primary' outline>Submit</Button>
                         </LocalForm>
